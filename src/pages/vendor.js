@@ -10,6 +10,8 @@ import {
   FormControl,
   FormErrorMessage,
   Checkbox,
+  Divider,
+  Center,
   Link,
 } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
@@ -18,7 +20,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 
-export default function SignUp() {
+export default function Vendor() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -41,6 +43,7 @@ export default function SignUp() {
     confirmPassword: Yup.string()
       .required("Confirm password is required.")
       .oneOf([Yup.ref("password"), null], "Passwords must match."),
+    vendorName: Yup.string().required("Vendor name is required."),
     agreeToPrivacy: Yup.bool().oneOf([true], "Field must be checked."),
     agreeToUserTerms: Yup.bool().oneOf([true], "Field must be checked."),
   });
@@ -88,11 +91,10 @@ export default function SignUp() {
           h="100%"
           minH={{ md: "100vh" }}
           alignItems="center"
-          justifyContent="center"
-          py={{ base: 7, md: "100px" }}
+          py={{ base: 7, md: "70px" }}
         >
           <Stack spacing={7} w={{ base: "80%", md: "60%" }}>
-            <Heading size="lg">Create Account</Heading>
+            <Heading size="lg">Create Vendor Account</Heading>
             <Formik
               initialValues={{
                 firstName: "",
@@ -103,11 +105,13 @@ export default function SignUp() {
                 contactNumber: "",
                 password: "",
                 confirmPassword: "",
-                userType: ["customer"],
+                userType: ["customer", "vendor"],
+                vendorName: "",
                 agreeToPrivacy: false,
                 agreeToUserTerms: false,
               }}
               validationSchema={SignupSchema}
+              validateOnChange={true}
               onSubmit={(values) => {
                 setIsSubmitting(true);
                 alert(JSON.stringify(values, null, 2));
@@ -198,7 +202,7 @@ export default function SignUp() {
                             paddingLeft: "10px",
                           }}
                           countryCodeEditable={false}
-                          searchStyle={{width: "93%"}}
+                          searchStyle={{ width: "93%" }}
                         />
                         <FormErrorMessage>
                           {errors.contactNumber}
@@ -235,6 +239,21 @@ export default function SignUp() {
                         </FormErrorMessage>
                       </FormControl>
                     </Stack>
+                    <Center py={2}>
+                      <Divider w="15%" border="1px" borderColor="gray.200" />
+                    </Center>
+                    <FormControl
+                      isInvalid={!!errors.vendorName && touched.vendorName}
+                    >
+                      <Field
+                        as={Input}
+                        id="vendorName"
+                        name="vendorName"
+                        borderRadius={99}
+                        placeholder="Vendor Name"
+                      />
+                      <FormErrorMessage>{errors.vendorName}</FormErrorMessage>
+                    </FormControl>
                     <Stack>
                       <Field
                         as={Checkbox}
