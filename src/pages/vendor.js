@@ -99,7 +99,8 @@ export default function Vendor() {
           h="100%"
           minH={{ md: "100vh" }}
           alignItems="center"
-          py={{ base: 7, md: "70px" }}
+          py={{ base: 7, md: "80px" }}
+          pb={{ base: 10, md: "80px" }}
         >
           <Stack spacing={7} w={{ base: "80%", md: "60%" }}>
             <Heading size="lg">Create Vendor Account</Heading>

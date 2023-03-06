@@ -98,6 +98,7 @@ export default function SignUp() {
           alignItems="center"
           justifyContent="center"
           py={{ base: 7, md: "100px" }}
+          pb={{ base: 10, md: "100px" }}
         >
           <Stack spacing={7} w={{ base: "80%", md: "60%" }}>
             <Heading size="lg">Create Account</Heading>
