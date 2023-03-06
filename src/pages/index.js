@@ -24,6 +24,8 @@ export default function SignUp() {
 
   const handleSignUp = async (values) => {
     try {
+      setIsSubmitting(true);
+
       let payload = {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -46,6 +48,8 @@ export default function SignUp() {
       router.push("verify-email");
     } catch (e) {
       console.log(e);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -113,9 +117,7 @@ export default function SignUp() {
               }}
               validationSchema={CustomerSignUpSchema}
               onSubmit={(values) => {
-                setIsSubmitting(true);
                 handleSignUp(values);
-                setIsSubmitting(false);
               }}
             >
               {({
