@@ -1,29 +1,5 @@
 import * as Yup from "yup";
 
-export const submitForm = (router, values) => {
-  let signUpRequest = {
-    firstName: values.firstName,
-    lastName: values.lastName,
-    email: values.email,
-    contactNumber: {
-      nationalNumber: values.contactNumber,
-      internationalNumber: values.dialCode + values.contactNumber,
-      isoCode: values.isoCode,
-      dialCode: values.dialCode,
-    },
-    password: values.password,
-    confirmPassword: values.confirmPassword,
-    userType: values.userType,
-    vendorName: values.vendorName,
-    agreeToPrivacy: values.agreeToPrivacy,
-    agreeToUserTerms: values.agreeToUserTerms,
-  };
-
-  console.log(JSON.stringify(signUpRequest, null, 2));
-  alert(JSON.stringify(signUpRequest, null, 2));
-  router.push("verify-email");
-};
-
 export const CustomerSignUpSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required."),
   lastName: Yup.string().required("Last name is required."),

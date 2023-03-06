@@ -16,11 +16,38 @@ import { Field, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
-import { CustomerSignUpSchema, submitForm } from "@/utils/tools";
+import { CustomerSignUpSchema } from "@/utils/tools";
 
 export default function SignUp() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSignUp = async (values) => {
+    try {
+      let payload = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        contactNumber: {
+          nationalNumber: values.contactNumber,
+          internationalNumber: values.dialCode + values.contactNumber,
+          isoCode: values.isoCode,
+          dialCode: values.dialCode,
+        },
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        userType: values.userType,
+        agreeToPrivacy: values.agreeToPrivacy,
+        agreeToUserTerms: values.agreeToUserTerms,
+      };
+
+      console.log(JSON.stringify(payload, null, 2));
+      alert(JSON.stringify(payload, null, 2));
+      router.push("verify-email");
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
@@ -87,7 +114,7 @@ export default function SignUp() {
               validationSchema={CustomerSignUpSchema}
               onSubmit={(values) => {
                 setIsSubmitting(true);
-                submitForm(router, values);
+                handleSignUp(values);
                 setIsSubmitting(false);
               }}
             >
