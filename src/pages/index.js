@@ -27,24 +27,29 @@ export default function SignUp() {
       setIsSubmitting(true);
 
       let payload = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        contactNumber: {
-          nationalNumber: values.contactNumber,
-          internationalNumber: values.dialCode + values.contactNumber,
-          isoCode: values.isoCode,
-          dialCode: values.dialCode,
-        },
-        password: values.password,
-        confirmPassword: values.confirmPassword,
-        userType: values.userType,
-        agreeToPrivacy: values.agreeToPrivacy,
-        agreeToUserTerms: values.agreeToUserTerms,
+        data: {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          contactNumber: {
+            nationalNumber: values.contactNumber,
+            internationalNumber: values.dialCode + values.contactNumber,
+            isoCode: values.isoCode,
+            dialCode: values.dialCode,
+          },
+          password: values.password,
+          confirmPassword: values.confirmPassword,
+          userType: values.userType,
+          agreeToPrivacy: values.agreeToPrivacy,
+          agreeToUserTerms: values.agreeToUserTerms,
+        }
       };
 
       console.log(JSON.stringify(payload, null, 2));
-      alert(JSON.stringify(payload, null, 2));
+      const res = await createUser(payload);
+      debugger;
+      alert(res.result.message);
+      if(res.result.statusCode === 200)
       router.push("verify-email");
     } catch (e) {
       console.log(e);
@@ -52,6 +57,22 @@ export default function SignUp() {
       setIsSubmitting(false);
     }
   };
+
+  async function createUser(data) {
+    const url = "http://127.0.0.1:5001/dev-deetz-app/us-central1/createUser";
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    const json = await response.json();
+    return json;
+    console.log(json);
+  }
 
   return (
     <>
