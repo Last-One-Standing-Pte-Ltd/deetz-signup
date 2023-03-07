@@ -59,7 +59,7 @@ export default function SignUp() {
   };
 
   async function createUser(data) {
-    const url = "http://127.0.0.1:5001/dev-deetz-app/us-central1/createUser";
+    const url = "https://asia-east2-deetzstaging.cloudfunctions.net/createUser";
 
     const response = await fetch(url, {
       method: "POST",
