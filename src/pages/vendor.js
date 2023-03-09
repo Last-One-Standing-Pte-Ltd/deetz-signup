@@ -22,6 +22,7 @@ import PhoneInput from "react-phone-input-2";
 import { VendorSignupSchema } from "@/utils/tools";
 import { createUser } from "@/utils/fetch";
 import SuccessToast from "@/components/toast/SuccessToast";
+import ErrorToast from "@/components/toast/ErrorToast";
 
 export default function Vendor() {
   const toast = useToast();
@@ -33,37 +34,39 @@ export default function Vendor() {
       setIsSubmitting(true);
 
       let payload = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        contactNumber: {
-          nationalNumber: values.contactNumber,
-          internationalNumber: values.dialCode + values.contactNumber,
-          isoCode: values.isoCode,
-          dialCode: values.dialCode,
+        data: {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          contactNumber: {
+            nationalNumber: values.contactNumber,
+            internationalNumber: values.dialCode + values.contactNumber,
+            isoCode: values.isoCode,
+            dialCode: values.dialCode,
+          },
+          password: values.password,
+          confirmPassword: values.confirmPassword,
+          userType: values.userType,
+          vendorName: values.vendorName,
+          agreeToPrivacy: values.agreeToPrivacy,
+          agreeToUserTerms: values.agreeToUserTerms,
         },
-        password: values.password,
-        confirmPassword: values.confirmPassword,
-        userType: values.userType,
-        vendorName: values.vendorName,
-        agreeToPrivacy: values.agreeToPrivacy,
-        agreeToUserTerms: values.agreeToUserTerms,
       };
 
-      // const res = await createUser(payload);
+      const res = await createUser(payload);
 
-      // if (res.result.statusCode === 200) {
-      //   toast({
-      //     position: "top",
-      //     render: () => <SuccessToast text={res.result.message} />,
-      //   });
-      //   router.push("verify-email");
-      // } else {
-      //   toast({
-      //     position: "top",
-      //     render: () => <ErrorToast text={res.result.message} />,
-      //   });
-      // }
+      if (res.result.statusCode === 200) {
+        toast({
+          position: "top",
+          render: () => <SuccessToast text={res.result.message} />,
+        });
+        router.push("verify-email");
+      } else {
+        toast({
+          position: "top",
+          render: () => <ErrorToast text={res.result.message} />,
+        });
+      }
     } catch (e) {
       console.log(e);
     } finally {
