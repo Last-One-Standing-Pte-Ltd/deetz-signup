@@ -13,14 +13,18 @@ import {
   Divider,
   Center,
   Link,
+  useToast,
 } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import { VendorSignupSchema } from "@/utils/tools";
+import { createUser } from "@/utils/fetch";
+import SuccessToast from "@/components/toast/SuccessToast";
 
 export default function Vendor() {
+  const toast = useToast();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,9 +50,20 @@ export default function Vendor() {
         agreeToUserTerms: values.agreeToUserTerms,
       };
 
-      console.log(JSON.stringify(payload, null, 2));
-      alert(JSON.stringify(payload, null, 2));
-      router.push("verify-email");
+      // const res = await createUser(payload);
+
+      // if (res.result.statusCode === 200) {
+      //   toast({
+      //     position: "top",
+      //     render: () => <SuccessToast text={res.result.message} />,
+      //   });
+      //   router.push("verify-email");
+      // } else {
+      //   toast({
+      //     position: "top",
+      //     render: () => <ErrorToast text={res.result.message} />,
+      //   });
+      // }
     } catch (e) {
       console.log(e);
     } finally {
