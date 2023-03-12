@@ -11,14 +11,19 @@ import {
   FormErrorMessage,
   Checkbox,
   Link,
+  useToast,
 } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import { CustomerSignUpSchema } from "@/utils/tools";
+import SuccessToast from "@/components/toast/SuccessToast";
+import { createUser } from "@/utils/fetch";
+import ErrorToast from "@/components/toast/ErrorToast";
 
 export default function SignUp() {
+  const toast = useToast();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -42,37 +47,29 @@ export default function SignUp() {
           userType: values.userType,
           agreeToPrivacy: values.agreeToPrivacy,
           agreeToUserTerms: values.agreeToUserTerms,
-        }
+        },
       };
 
-      console.log(JSON.stringify(payload, null, 2));
       const res = await createUser(payload);
-      debugger;
-      alert(res.result.message);
-      if(res.result.statusCode === 200)
-      router.push("verify-email");
+
+      if (res.result.statusCode === 200) {
+        toast({
+          position: "top",
+          render: () => <SuccessToast text={res.result.message} />,
+        });
+        router.push("verify-email");
+      } else {
+        toast({
+          position: "top",
+          render: () => <ErrorToast text={res.result.message} />,
+        });
+      }
     } catch (e) {
       console.log(e);
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  async function createUser(data) {
-    const url = "https://asia-east2-deetz-95c0f.cloudfunctions.net/createUser";
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-
-    const json = await response.json();
-    return json;
-    console.log(json);
-  }
 
   return (
     <>
