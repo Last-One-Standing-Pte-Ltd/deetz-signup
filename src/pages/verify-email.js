@@ -1,4 +1,7 @@
 import Head from "next/head";
+import { useRouter } from 'next/router';
+import { sendMailFunction } from "@/utils/fetch";
+
 import {
   Flex,
   Heading,
@@ -12,6 +15,23 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { IoMailOutline } from "react-icons/io5";
+
+const sendMail = async () => {
+  debugger;
+  const router = useRouter();
+  const { email, link } = router.query;
+  let payload = {
+    data: {
+      emailId: email,
+      link: link,
+    }
+  };
+  const res = await sendMailFunction(payload);
+  if(res === null)
+  {
+
+  }
+}
 
 export default function VerifyEmail() {
   return (
@@ -64,7 +84,7 @@ export default function VerifyEmail() {
           <Stack spacing="60px" w="80%">
             <Stack spacing={5} alignItems="center" justifyContent="center">
               <Icon as={IoMailOutline} color="green" fontSize="50px" />
-              <Heading size="lg">Email Verification</Heading>
+              <Button size="lg" onClick= {sendMail()}>Email Verification</Button>
               <Stack alignItems="center" justifyContent="center" spacing={1}>
                 <Text textAlign={"center"}>
                   Thank you for signing up on Deetz!

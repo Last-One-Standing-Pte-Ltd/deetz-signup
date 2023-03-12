@@ -57,6 +57,10 @@ export default function SignUp() {
           position: "top",
           render: () => <SuccessToast text={res.result.message} />,
         });
+        router.push({
+          pathname: 'verify-email',
+          query: { email:  values.email, link: res.result.emailLink }
+        });
         router.push("verify-email");
       } else {
         toast({
