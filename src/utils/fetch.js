@@ -1,5 +1,5 @@
 export const createUser = async (data) => {
-  const url = "https://asia-east2-deetzstaging.cloudfunctions.net/createUser";
+  const url = "https://asia-east2-deetz-95c0f.cloudfunctions.net/createUser";
 
   const response = await fetch(url, {
     method: "POST",
