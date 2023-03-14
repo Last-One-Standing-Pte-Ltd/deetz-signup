@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { sendMailFunction } from "@/utils/fetch";
 
 import {
@@ -13,27 +13,36 @@ import {
   HStack,
   Link,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { IoMailOutline } from "react-icons/io5";
-
-const sendMail = async () => {
-  debugger;
-  const router = useRouter();
-  const { email, link } = router.query;
-  let payload = {
-    data: {
-      emailId: email,
-      link: link,
-    }
-  };
-  const res = await sendMailFunction(payload);
-  if(res === null)
-  {
-
-  }
-}
+import SuccessToast from "@/components/toast/SuccessToast";
 
 export default function VerifyEmail() {
+  const toast = useToast();
+  const router = useRouter();
+  const { email, link } = router.query;
+
+  const sendMail = async () => {
+    try {
+      let payload = {
+        data: {
+          emailId: email,
+          link: link,
+        },
+      };
+
+      const res = await sendMailFunction(payload);
+
+      toast({
+        position: "top",
+        render: () => <SuccessToast text={"Email has been sent!"} />,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -84,7 +93,7 @@ export default function VerifyEmail() {
           <Stack spacing="60px" w="80%">
             <Stack spacing={5} alignItems="center" justifyContent="center">
               <Icon as={IoMailOutline} color="green" fontSize="50px" />
-              <Button size="lg" onClick= {sendMail()}>Email Verification</Button>
+              <Heading size="lg">Email Verification</Heading>
               <Stack alignItems="center" justifyContent="center" spacing={1}>
                 <Text textAlign={"center"}>
                   Thank you for signing up on Deetz!
@@ -103,6 +112,7 @@ export default function VerifyEmail() {
                   <Image
                     src="/app_store/app_store.png"
                     w={{ base: "50vw", md: "150px" }}
+                    maxW="150px"
                   />
                 </Link>
                 <Link
@@ -112,6 +122,7 @@ export default function VerifyEmail() {
                   <Image
                     src="/app_store/google_play.png"
                     w={{ base: "50vw", md: "150px" }}
+                    maxW="150px"
                   />
                 </Link>
               </HStack>
@@ -126,6 +137,9 @@ export default function VerifyEmail() {
                 bgColor="primary.500"
                 borderRadius={99}
                 px={10}
+                onClick={() => {
+                  sendMail();
+                }}
               >
                 Resend Link
               </Button>
