@@ -60,7 +60,10 @@ export default function Vendor() {
           position: "top",
           render: () => <SuccessToast text={res.result.message} />,
         });
-        router.push("verify-email");
+        router.push({
+          pathname: "verify-email",
+          query: { email: values.email, link: res.result.emailLink },
+        });
       } else {
         toast({
           position: "top",

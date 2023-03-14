@@ -61,7 +61,6 @@ export default function SignUp() {
           pathname: 'verify-email',
           query: { email:  values.email, link: res.result.emailLink }
         });
-        router.push("verify-email");
       } else {
         toast({
           position: "top",
